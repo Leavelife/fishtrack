@@ -6,7 +6,7 @@ const Feed = {
     },
 
     async getById(id) {
-      const [rows] = await db.query('SELECT * FROM ponds WHERE id = ?', [id]);
+      const [rows] = await db.query('SELECT * FROM feeds WHERE id = ?', [id]);
       return rows[0];
     },
 
@@ -27,5 +27,4 @@ const Feed = {
         return { id };
     }
 };
-
 module.exports = Feed;
