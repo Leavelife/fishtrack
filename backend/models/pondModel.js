@@ -1,6 +1,6 @@
 const db = require('../configs/db');
-
 const Pond = {
+
   async getAll() {
     const [rows] = await db.query('SELECT * FROM ponds');
     return rows;
