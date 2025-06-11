@@ -9,6 +9,7 @@ const harvestRoutes = require('./routes/harvestRoutes')
 const transactionRoutes = require('./routes/transactionRoutes')
 const authRoutes = require('./routes/authRoutes')
 const userRoutes = require('./routes/userRoutes')
+const roleRoutes = require('./routes/role');
 const dashboard = require('./routes/dashboard')
 
 const errorHandler = require('./middleware/errorHandle')
@@ -27,6 +28,7 @@ app.use('/api/harvest', harvestRoutes)
 app.use('/api/transaction', transactionRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/role', roleRoutes);
 app.use('/dashboard', dashboard)
 
 app.use(errorHandler)

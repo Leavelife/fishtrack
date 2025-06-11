@@ -31,7 +31,7 @@ exports.register = async (req, res, next) => {
     // Insert user ke DB
     const [result] = await db.query(
       'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-      [name, email, hashedPassword, role || 'owner']
+      [name, email, hashedPassword, role || 'pengguna']
     );
 
     // Ambil user yg baru dibuat
@@ -59,7 +59,6 @@ exports.register = async (req, res, next) => {
     next(err);
   }
 };
-
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
