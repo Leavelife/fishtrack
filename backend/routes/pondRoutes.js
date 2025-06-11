@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const pondController = require('../controllers/pondController');
+const authenticateToken = require('../middleware/authToken');
+const authorizeRoles = require('../middleware/authorizeRole');
 
+// GET boleh semua pengunjung
 router.get('/', pondController.getAllPonds);
 router.get('/:id', pondController.getPondById);
 
-router.post('/', pondController.createPond);
+// middleware untuk route yang user harus login dulu
+router.use(authenticateToken);
 
-router.put('/:id', pondController.updatePond);
-
-router.delete('/:id', pondController.deletePond);
+// POST, PUT, DELETE hanya untuk owner dan karyawan
+router.post('/', authorizeRoles('owner', 'karyawan'), pondController.createPond);
+router.put('/:id', authorizeRoles('owner', 'karyawan'), pondController.updatePond);
+router.delete('/:id', authorizeRoles('owner', 'karyawan'), pondController.deletePond);
 
 module.exports = router;
