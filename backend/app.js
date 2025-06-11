@@ -3,7 +3,10 @@ const app = express();
 const pondRoutes = require('./routes/pondRoutes');
 const feedRoutes = require('./routes/feedRoutes');
 const irrigationRoutes = require('./routes/irrigRoutes');
+const mortalitiesRoutes = require('./routes/mortalRoutes')
 const errorHandler = require('./middleware/errorHandle')
+
+
 require('dotenv').config();
 app.use(express.json());
 
@@ -11,10 +14,11 @@ app.use(express.json());
 app.use('/api/ponds', pondRoutes);
 app.use('/api/feeds', feedRoutes);
 app.use('/api/irrigation', irrigationRoutes);
+app.use('/api/mortalities', mortalitiesRoutes)
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server berjalan di port ${PORT}`);
 });
