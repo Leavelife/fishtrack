@@ -1,23 +1,24 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+const User = require('../models/userModel');
 const sendResponse = require('../utils/sendResponse');
+const { registerSchema, loginSchema } = require('../validations/authValidation');
 
 exports.register = async (req, res, next) => {
-  const { name, email, password, role } = req.body;
-
-  if (!email || !password || !name) {
+  const { error, value } = registerSchema.validate(req.body);
+  if (error) {
     return sendResponse(res, {
       statusCode: 400,
       success: false,
-      message: 'Name, email, and password are required',
+      message: error.details[0].message,
     });
   }
 
+  const { name, email, password, role } = value;
+
   try {
-    // Cek apakah email sudah digunakan
-    const [existingUser] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-    if (existingUser.length > 0) {
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
       return sendResponse(res, {
         statusCode: 409,
         success: false,
@@ -25,33 +26,31 @@ exports.register = async (req, res, next) => {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      role: role || 'pengguna'
+    });
 
-    // Insert user ke DB
-    const [result] = await db.query(
-      'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
-      [name, email, hashedPassword, role || 'pengguna']
-    );
-
-    // Ambil user yg baru dibuat
-    const [newUserRows] = await db.query('SELECT id, name, email, role FROM users WHERE id = ?', [result.insertId]);
-    const newUser = newUserRows[0];
-
-    // Buat JWT token
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role },
       process.env.JWT_SECRET || 'defaultsecret',
       { expiresIn: '1d' }
     );
 
-    return sendResponse(res, {
+    sendResponse(res, {
       statusCode: 201,
-      success: true,
       message: 'User registered successfully',
       data: {
         token,
-        user: newUser
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role
+        }
       }
     });
   } catch (err) {
@@ -61,21 +60,20 @@ exports.register = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
+  const { error, value } = loginSchema.validate(req.body);
+  if (error) {
     return sendResponse(res, {
       statusCode: 400,
       success: false,
-      message: 'Email and password are required',
+      message: error.details[0].message,
     });
   }
 
-  try {
-    // Cek user berdasarkan email
-    const [userResult] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+  const { email, password } = value;
 
-    if (userResult.length === 0) {
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
       return sendResponse(res, {
         statusCode: 401,
         success: false,
@@ -83,9 +81,6 @@ exports.login = async (req, res, next) => {
       });
     }
 
-    const user = userResult[0];
-
-    // Bandingkan password input dengan hashed password di DB
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return sendResponse(res, {
@@ -95,21 +90,19 @@ exports.login = async (req, res, next) => {
       });
     }
 
-    // Buat JWT Token
     const token = jwt.sign(
       { id: user.id, name: user.name, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1d' } // bisa disesuaikan
+      { expiresIn: '1d' }
     );
 
-    // Kirim token lewat cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000, // 1 hari
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
-    return sendResponse(res, {
+    sendResponse(res, {
       message: 'Login successful',
       data: {
         id: user.id,
@@ -120,6 +113,23 @@ exports.login = async (req, res, next) => {
     });
   } catch (err) {
     console.error('[LOGIN ERROR]', err.message);
+    next(err);
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    return sendResponse(res, {
+      message: 'Logout successful',
+    });
+  } catch (err) {
+    console.error('[LOGOUT ERROR]', err.message);
     next(err);
   }
 };
