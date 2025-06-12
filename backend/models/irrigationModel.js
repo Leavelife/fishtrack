@@ -1,31 +1,32 @@
-const db = require('../configs/db');
+const {DataTypes} = require('sequelize')
+const sequelize = require('../config/db');
 
-const Irrigation = {
-  getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM irrigations');
-    return rows;
+const Irrigation = sequelize.define('Irrigation', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-
-  getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM irrigations WHERE id = ?', [id]);
-    return rows[0];
+  pond_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  create: async (data) => {
-    const [result] = await db.query('INSERT INTO irrigations SET ?', data);
-    return { id: result.insertId, ...data };
+  irrigation_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
   },
-
-  update: async (id, data) => {
-    const [result] = await db.query('UPDATE irrigations SET ? WHERE id = ?', [data, id]);
-    if (result.affectedRows === 0) return null;
-    return { id, ...data };
+  duration_minutes: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  delete: async (id) => {
-    const [result] = await db.query('DELETE FROM irrigations WHERE id = ?', [id]);
-    return result.affectedRows > 0;
+  notes: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
-};
+}, {
+  tableName: 'irrigations',
+  timestamps: false,
+  underscored: true,
+})
 
 module.exports = Irrigation;

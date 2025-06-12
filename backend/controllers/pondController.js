@@ -5,7 +5,7 @@ const sendResponse = require('../utils/sendResponse')
 // Get all ponds
 exports.getAllPonds = async (req, res, next) => {
   try {
-    const ponds = await Pond.getAll();
+    const ponds = await Pond.findAll();
 
     if (!ponds.length) {
       return next(createError(404, 'No ponds found'));
@@ -23,8 +23,7 @@ exports.getAllPonds = async (req, res, next) => {
 // Get pond by ID
 exports.getPondById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const pond = await Pond.getById(id);
+    const pond = await Pond.findByPk(req.params.id);
 
     if (!pond) {
       return next(createError(404, 'Pond not found'));
@@ -35,7 +34,7 @@ exports.getPondById = async (req, res, next) => {
       data: pond,
     });
   } catch (err) {
-    console.error('[GET /ponds/:id] Error:', err.message);
+    console.error(`[GET /ponds/${req.params.id}] Error:`, err.message);
     next(err);
   }
 };
@@ -58,9 +57,9 @@ exports.createPond = async (req, res, next) => {
 // Update pond
 exports.updatePond = async (req, res, next) => {
   try {
-    const updatedPond = await Pond.update(req.params.id, req.body);
+    const updatePond = await Pond.update(req.body, {where: {id: req.params.id}});
 
-    if (!updatedPond) {
+    if (updatePond === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -68,6 +67,7 @@ exports.updatePond = async (req, res, next) => {
       });
     }
 
+    const updatedPond = await Pond.findByPk(req.params.id)
     sendResponse(res, {
       message: 'Pond updated successfully',
       data: updatedPond,
@@ -81,9 +81,9 @@ exports.updatePond = async (req, res, next) => {
 // Delete pond
 exports.deletePond = async (req, res, next) => {
   try {
-    const deletedPond = await Pond.delete(req.params.id);
+    const deletedPond = await Pond.destroy({where: {id: req.params.id}});
 
-    if (!deletedPond) {
+    if (deletedPond === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

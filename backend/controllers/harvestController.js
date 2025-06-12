@@ -3,7 +3,7 @@ const sendResponse = require('../utils/sendResponse');
 
 exports.getAllHarvests = async (req, res, next) => {
   try {
-    const harvests = await Harvest.getAll();
+    const harvests = await Harvest.findAll();
     sendResponse(res, {
       message: 'All harvest records fetched successfully',
       data: harvests,
@@ -16,7 +16,7 @@ exports.getAllHarvests = async (req, res, next) => {
 
 exports.getHarvestById = async (req, res, next) => {
   try {
-    const harvest = await Harvest.getById(req.params.id);
+    const harvest = await Harvest.findByPk(req.params.id);
     if (!harvest) {
       return sendResponse(res, {
         statusCode: 404,
@@ -51,8 +51,8 @@ exports.createHarvest = async (req, res, next) => {
 
 exports.updateHarvest = async (req, res, next) => {
   try {
-    const updated = await Harvest.update(req.params.id, req.body);
-    if (!updated) {
+    const [updated] = await Harvest.update(req.body, {where: {id: req.params.id}});
+    if (updated === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -60,9 +60,10 @@ exports.updateHarvest = async (req, res, next) => {
       });
     }
 
+    const updatedHarvest = await Harvest.findByPk(req.params.id);
     sendResponse(res, {
       message: 'Harvest record updated successfully',
-      data: updated,
+      data: updatedHarvest,
     });
   } catch (err) {
     console.error(`[PUT /harvest/${req.params.id}] Error:`, err.message);
@@ -72,8 +73,8 @@ exports.updateHarvest = async (req, res, next) => {
 
 exports.deleteHarvest = async (req, res, next) => {
   try {
-    const deleted = await Harvest.delete(req.params.id);
-    if (!deleted) {
+    const deleted = await Harvest.destroy({where: {id: req.params.id},});
+    if (deleted === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

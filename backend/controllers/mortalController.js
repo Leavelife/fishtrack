@@ -3,7 +3,7 @@ const sendResponse = require('../utils/sendResponse');
 
 exports.getAllMortalities = async (req, res, next) => {
   try {
-    const mortalities = await Mortality.getAll();
+    const mortalities = await Mortality.findAll();
     sendResponse(res, {
       message: 'All mortality records fetched successfully',
       data: mortalities,
@@ -16,7 +16,7 @@ exports.getAllMortalities = async (req, res, next) => {
 
 exports.getMortalityById = async (req, res, next) => {
   try {
-    const mortality = await Mortality.getById(req.params.id);
+    const mortality = await Mortality.findByPk(req.params.id);
     if (!mortality) {
       return sendResponse(res, {
         statusCode: 404,
@@ -51,8 +51,8 @@ exports.createMortality = async (req, res, next) => {
 
 exports.updateMortality = async (req, res, next) => {
   try {
-    const updated = await Mortality.update(req.params.id, req.body);
-    if (!updated) {
+    const update = await Mortality.update(req.body, {where: {id: req.params.id}});
+    if (update === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -60,9 +60,10 @@ exports.updateMortality = async (req, res, next) => {
       });
     }
 
+    const updatedMortalities = await Mortality.findByPk(req.params.id)
     sendResponse(res, {
       message: 'Mortality record updated successfully',
-      data: updated,
+      data: updatedMortalities,
     });
   } catch (err) {
     console.error(`[PUT /mortalities/${req.params.id}] Error:`, err.message);
@@ -72,8 +73,8 @@ exports.updateMortality = async (req, res, next) => {
 
 exports.deleteMortality = async (req, res, next) => {
   try {
-    const deleted = await Mortality.delete(req.params.id);
-    if (!deleted) {
+    const deleted = await Mortality.destroy({where: {id: req.params.id}});
+    if (deleted === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

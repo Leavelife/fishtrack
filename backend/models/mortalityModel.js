@@ -1,31 +1,40 @@
-const db = require('../configs/db');
+const {DataTypes} = require('sequelize')
+const sequelize = require('../config/db');
 
-const Mortality = {
-  getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM mortalities');
-    return rows;
+const Mortality = sequelize.define('Mortality', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-
-  getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM mortalities WHERE id = ?', [id]);
-    return rows[0];
+  pond_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  create: async (data) => {
-    const [result] = await db.query('INSERT INTO mortalities SET ?', data);
-    return { id: result.insertId, ...data };
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
   },
-
-  update: async (id, data) => {
-    const [result] = await db.query('UPDATE mortalities SET ? WHERE id = ?', [data, id]);
-    if (result.affectedRows === 0) return null;
-    return { id, ...data };
+  cause: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
-
-  delete: async (id) => {
-    const [result] = await db.query('DELETE FROM mortalities WHERE id = ?', [id]);
-    return result.affectedRows > 0;
+  amount: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
-};
+  estimasi_mati: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  notes: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+}, {
+  tableName: 'mortalities',
+  timestamps: false,
+  underscored: true,
+})
 
 module.exports = Mortality

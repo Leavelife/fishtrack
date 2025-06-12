@@ -4,6 +4,9 @@ const pondController = require('../controllers/pondController');
 const authenticateToken = require('../middleware/authToken');
 const authorizeRoles = require('../middleware/authorizeRole');
 
+const validateRequest = require('../middleware/validateRequest');
+const pondValidation = require('../validations/pondValidation');
+
 // GET boleh semua pengunjung
 router.get('/', pondController.getAllPonds);
 router.get('/:id', pondController.getPondById);
@@ -12,8 +15,19 @@ router.get('/:id', pondController.getPondById);
 router.use(authenticateToken);
 
 // POST, PUT, DELETE hanya untuk owner dan karyawan
-router.post('/', authorizeRoles('owner', 'karyawan'), pondController.createPond);
-router.put('/:id', authorizeRoles('owner', 'karyawan'), pondController.updatePond);
-router.delete('/:id', authorizeRoles('owner', 'karyawan'), pondController.deletePond);
+router.post('/', 
+    authorizeRoles('owner', 'karyawan'), 
+    validateRequest(pondValidation), 
+    pondController.createPond
+);
+router.put('/:id', 
+    authorizeRoles('owner', 'karyawan'), 
+    validateRequest(pondValidation), 
+    pondController.updatePond
+);
+router.delete('/:id', 
+    authorizeRoles('owner', 'karyawan'), 
+    pondController.deletePond
+);
 
 module.exports = router;
