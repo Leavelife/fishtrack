@@ -1,6 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
-const app = express();
+const cors = require('cors')
 const { sequelize } = require('./models');
 
 const pondRoutes = require('./routes/pondRoutes');
@@ -12,12 +12,17 @@ const transactionRoutes = require('./routes/transactionRoutes')
 const authRoutes = require('./routes/authRoutes')
 const roleRoutes = require('./routes/role');
 const dashboard = require('./routes/dashboard')
-
 const errorHandler = require('./middleware/errorHandle')
 
-require('dotenv').config();
+const app = express();
+app.use(cors({
+  origin: 'https://127.0.0.1:5173',
+  credentials: true
+}))
+
 app.use(express.json());
 app.use(cookieParser())
+require('dotenv').config();
 
 // Routes
 app.use('/api/ponds', pondRoutes);
@@ -32,7 +37,7 @@ app.use('/dashboard', dashboard)
 
 app.use(errorHandler)
 
-sequelize.sync({ alter: true })
+sequelize.sync()
   .then(() => {
     console.log('Database & tabel Sequelize sinkron.');
     app.listen(process.env.PORT, () => {
@@ -42,3 +47,4 @@ sequelize.sync({ alter: true })
   .catch((err) => {
     console.error('Gagal sinkronisasi Sequelize:', err.message);
   });
+

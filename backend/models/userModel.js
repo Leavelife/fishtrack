@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('../config/db');
 
 const User = sequelize.define('User', {
@@ -28,6 +28,7 @@ const User = sequelize.define('User', {
   created_at: {
     type: DataTypes.DATEONLY,
     allowNull: false,
+    defaultValue: Sequelize.NOW
   },
 }, {
   tableName: 'users',

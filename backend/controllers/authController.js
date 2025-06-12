@@ -4,6 +4,34 @@ const User = require('../models/userModel');
 const sendResponse = require('../utils/sendResponse');
 const { registerSchema, loginSchema } = require('../validations/authValidation');
 
+exports.refreshToken = async (req, res) => {
+  const token = req.cookies?.refreshToken;
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No refresh token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+
+    const accessToken = jwt.sign(
+      { id: decoded.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '30m' }
+    );
+
+    res.cookie('token', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 60 * 1000
+    });
+
+    return res.json({ success: true, message: 'Access token refreshed' });
+  } catch (err) {
+    return res.status(403).json({ success: false, message: 'Invalid or expired refresh token' });
+  }
+};
+
 exports.register = async (req, res, next) => {
   const { error, value } = registerSchema.validate(req.body);
   if (error) {
@@ -36,9 +64,27 @@ exports.register = async (req, res, next) => {
 
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role },
-      process.env.JWT_SECRET || 'defaultsecret',
-      { expiresIn: '1d' }
+      process.env.JWT_SECRET,
+      { expiresIn: '30m' }
     );
+    const refreshToken = jwt.sign(
+      { id: newUser.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    // Kirim cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 60 * 1000 
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 hari
+    });
 
     sendResponse(res, {
       statusCode: 201,
@@ -93,13 +139,25 @@ exports.login = async (req, res, next) => {
     const token = jwt.sign(
       { id: user.id, name: user.name, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      { expiresIn: '30m' }
     );
-
+    const refreshToken = jwt.sign(
+      { id: user.id },
+      process.env.JWT_REFRESH_SECRET,
+      { expiresIn: '7d' }
+    );
+    
+    // Kirim cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 30 * 60 * 1000 
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
     sendResponse(res, {
