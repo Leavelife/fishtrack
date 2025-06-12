@@ -1,30 +1,32 @@
-const db = require('../configs/db');
-const Feed = {
-    async getAll() {
-        const [rows] = await db.query('SELECT * FROM feeds');
-        return rows;
-    },
+const {DataTypes} = require('sequelize')
+const sequelize = require('../config/db');
 
-    async getById(id) {
-      const [rows] = await db.query('SELECT * FROM feeds WHERE id = ?', [id]);
-      return rows[0];
-    },
+const Feed = sequelize.define('Feed', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  pond_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  feed_type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  feed_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  amount_kg: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+}, {
+    tableName: 'feeds',
+    timestamps: false,
+    underscored: true,
+})
 
-    async create(data) {
-        const [result] = await db.query('INSERT INTO feeds SET ?', data);
-        return { id: result.insertId, ...data };
-    },
-
-    async update(id, data) {
-        const [result] = await db.query('UPDATE feeds SET ? WHERE id = ?', [data, id]);
-        if (result.affectedRows === 0) return null;
-        return { id, ...data };
-    },
-
-    async delete(id) {
-        const [result] = await db.query('DELETE FROM feeds WHERE id = ?', [id]);
-        if (result.affectedRows === 0) return null;
-        return { id };
-    }
-};
 module.exports = Feed;

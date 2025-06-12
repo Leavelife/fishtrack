@@ -1,9 +1,10 @@
 const Transaction = require('../models/transactionModel');
 const sendResponse = require('../utils/sendResponse');
 
+// GET ALL
 exports.getAllTransactions = async (req, res, next) => {
   try {
-    const transactions = await Transaction.getAll();
+    const transactions = await Transaction.findAll();
     sendResponse(res, {
       message: 'All transaction records fetched successfully',
       data: transactions,
@@ -14,9 +15,10 @@ exports.getAllTransactions = async (req, res, next) => {
   }
 };
 
+// GET BY ID
 exports.getTransactionById = async (req, res, next) => {
   try {
-    const transaction = await Transaction.getById(req.params.id);
+    const transaction = await Transaction.findByPk(req.params.id);
     if (!transaction) {
       return sendResponse(res, {
         statusCode: 404,
@@ -35,6 +37,7 @@ exports.getTransactionById = async (req, res, next) => {
   }
 };
 
+// CREATE
 exports.createTransaction = async (req, res, next) => {
   try {
     const newTransaction = await Transaction.create(req.body);
@@ -49,10 +52,14 @@ exports.createTransaction = async (req, res, next) => {
   }
 };
 
+// UPDATE
 exports.updateTransaction = async (req, res, next) => {
   try {
-    const updatedTransaction = await Transaction.update(req.params.id, req.body);
-    if (!updatedTransaction) {
+    const [updatedRows] = await Transaction.update(req.body, {
+      where: { id: req.params.id },
+    });
+
+    if (updatedRows === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -60,6 +67,7 @@ exports.updateTransaction = async (req, res, next) => {
       });
     }
 
+    const updatedTransaction = await Transaction.findByPk(req.params.id);
     sendResponse(res, {
       message: 'Transaction updated successfully',
       data: updatedTransaction,
@@ -70,10 +78,14 @@ exports.updateTransaction = async (req, res, next) => {
   }
 };
 
+// DELETE
 exports.deleteTransaction = async (req, res, next) => {
   try {
-    const deletedTransaction = await Transaction.delete(req.params.id);
-    if (!deletedTransaction) {
+    const deletedRows = await Transaction.destroy({
+      where: { id: req.params.id },
+    });
+
+    if (deletedRows === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

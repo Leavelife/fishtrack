@@ -4,7 +4,7 @@ const sendResponse = require('../utils/sendResponse')
 
 exports.getAllFeeds = async (req, res, next) => {
   try {
-    const feeds = await Feed.getAll();
+    const feeds = await Feed.findAll();
     
     if (!feeds.length) {
       return next(createError(404, 'No feeds found'));
@@ -20,8 +20,7 @@ exports.getAllFeeds = async (req, res, next) => {
 
 exports.getFeedById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const feed = await Feed.getById(id);
+    const feed = await Feed.findByPk(req.params.id);
 
     if (!feed) {
       return next(createError(404, 'Feed not found'));
@@ -52,8 +51,8 @@ exports.createFeed = async (req, res, next) => {
 
 exports.updateFeed = async (req, res, next) => {
   try {
-    const updatedFeed = await Feed.update(req.params.id, req.body);
-    if (!updatedFeed) {
+    const updateFeed = await Feed.update(req.body, {where: {id: req.params.id}});
+    if (updateFeed === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -61,6 +60,7 @@ exports.updateFeed = async (req, res, next) => {
       });
     }
 
+    const updatedFeed = await Feed.findByPk(req.params.id)
     sendResponse(res, {
       message: 'Feed updated successfully',
       data: updatedFeed,
@@ -73,9 +73,9 @@ exports.updateFeed = async (req, res, next) => {
 
 exports.deleteFeed = async (req, res, next) => {
   try {
-    const deletedFeed = await Feed.delete(req.params.id);
+    const deletedFeed = await Feed.destroy({where: {id: req.params.id}});
     
-    if (!deletedFeed) {
+    if (deletedFeed === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

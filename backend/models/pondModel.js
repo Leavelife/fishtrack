@@ -1,32 +1,40 @@
-const db = require('../configs/db');
-const Pond = {
+const {DataTypes} = require('sequelize')
+const sequelize = require('../config/db');
 
-  async getAll() {
-    const [rows] = await db.query('SELECT * FROM ponds');
-    return rows;
+const Pond = sequelize.define('Pond', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-
-  async getById(id) {
-    const [rows] = await db.query('SELECT * FROM ponds WHERE id = ?', [id]);
-    return rows[0];
+  fish_type: {
+    type: DataTypes.ENUM('lele', 'nila', 'gurame'),
+    allowNull: false,
   },
-
-  async create(data) {
-    const [result] = await db.query('INSERT INTO ponds SET ?', data);
-    return { id: result.insertId, ...data };
+  width: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  async update(id, data) {
-    const [result] = await db.query('UPDATE ponds SET ? WHERE id = ?', [data, id]);
-    if (result.affectedRows === 0) return null;
-    return { id, ...data };
+  length: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  async delete(id) {
-    const [result] = await db.query('DELETE FROM ponds WHERE id = ?', [id]);
-    if (result.affectedRows === 0) return null;
-    return { id };
-  }
-};
+  density: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  start_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM('aktif', 'panen', 'kosong'),
+    allowNull: false,
+  },
+}, {
+  tableName: 'ponds',
+  timestamps: false,
+  underscored: true,
+})
 
 module.exports = Pond;

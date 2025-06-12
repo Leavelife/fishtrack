@@ -1,31 +1,36 @@
-const db = require('../configs/db');
+const {DataTypes} = require('sequelize')
+const sequelize = require('../config/db');
 
-const Harvest = {
-  getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM harvests');
-    return rows;
+const Harvest = sequelize.define('Hrvest', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-
-  getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM harvests WHERE id = ?', [id]);
-    return rows[0];
+  pond_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  create: async (data) => {
-    const [result] = await db.query('INSERT INTO harvests SET ?', data);
-    return { id: result.insertId, ...data };
+  harvest_date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
   },
-
-  update: async (id, data) => {
-    const [result] = await db.query('UPDATE harvests SET ? WHERE id = ?', [data, id]);
-    if (result.affectedRows === 0) return null;
-    return { id, ...data };
+  weight_kg: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
   },
-
-  delete: async (id) => {
-    const [result] = await db.query('DELETE FROM harvests WHERE id = ?', [id]);
-    return result.affectedRows > 0;
+  price_per_kg: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
   },
-};
+  buyer: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+}, {
+  tableName: 'harvests',
+  timestamps: false,
+  underscored: true,
+})
 
 module.exports = Harvest

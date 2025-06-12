@@ -1,31 +1,40 @@
-const db = require('../configs/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
 
-const Transaction = {
-  getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM transactions');
-    return rows;
+const Transaction = sequelize.define('Transaction', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-
-  getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM transactions WHERE id = ?', [id]);
-    return rows[0];
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
   },
-
-  create: async (data) => {
-    const [result] = await db.query('INSERT INTO transactions SET ?', data);
-    return { id: result.insertId, ...data };
+  pond_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
-
-  update: async (id, data) => {
-    const [result] = await db.query('UPDATE transactions SET ? WHERE id = ?', [data, id]);
-    if (result.affectedRows === 0) return null;
-    return { id, ...data };
+  type: {
+    type: DataTypes.ENUM('income', 'expance'),
+    allowNull: false,
   },
-
-  delete: async (id) => {
-    const [result] = await db.query('DELETE FROM transactions WHERE id = ?', [id]);
-    return result.affectedRows > 0;
+  category: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-};
+  amount: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+}, {
+  tableName: 'transactions',
+  timestamps: false,
+  underscored: true,
+});
 
-module.exports = Transaction
+module.exports = Transaction;

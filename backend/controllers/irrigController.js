@@ -3,7 +3,7 @@ const sendResponse = require('../utils/sendResponse');
 
 exports.getAllIrrigations = async (req, res, next) => {
   try {
-    const irrigations = await Irrigation.getAll();
+    const irrigations = await Irrigation.findAll();
     sendResponse(res, {
       message: 'All irrigation records fetched successfully',
       data: irrigations,
@@ -16,7 +16,7 @@ exports.getAllIrrigations = async (req, res, next) => {
 
 exports.getIrrigationById = async (req, res, next) => {
   try {
-    const irrigation = await Irrigation.getById(req.params.id);
+    const irrigation = await Irrigation.findByPk(req.params.id);
     if (!irrigation) {
       return sendResponse(res, {
         statusCode: 404,
@@ -51,8 +51,8 @@ exports.createIrrigation = async (req, res, next) => {
 
 exports.updateIrrigation = async (req, res, next) => {
   try {
-    const updated = await Irrigation.update(req.params.id, req.body);
-    if (!updated) {
+    const update = await Irrigation.update(req.body, {where: {id: req.params.id}});
+    if (update === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,
@@ -60,9 +60,10 @@ exports.updateIrrigation = async (req, res, next) => {
       });
     }
 
+    const updatedIrrigation = await Irrigation.findByPk(req.params.id)
     sendResponse(res, {
       message: 'Irrigation record updated successfully',
-      data: updated,
+      data: updatedIrrigation,
     });
   } catch (err) {
     console.error(`[PUT /irrigation/${req.params.id}] Error:`, err.message);
@@ -72,8 +73,8 @@ exports.updateIrrigation = async (req, res, next) => {
 
 exports.deleteIrrigation = async (req, res, next) => {
   try {
-    const deleted = await Irrigation.delete(req.params.id);
-    if (!deleted) {
+    const deleted = await Irrigation.delete({where: {id: req.params.id}});
+    if (deleted === 0) {
       return sendResponse(res, {
         statusCode: 404,
         success: false,

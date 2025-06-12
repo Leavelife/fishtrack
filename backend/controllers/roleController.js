@@ -1,4 +1,4 @@
-const db = require('../configs/db');
+const db = require('../config/db');
 
 exports.ubahRoleUser = async (req, res) => {
   const { userId, newRole } = req.body;
