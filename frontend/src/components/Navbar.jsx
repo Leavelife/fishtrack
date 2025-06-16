@@ -1,8 +1,17 @@
 // src/components/Navbar.jsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
 
 const Navbar = () => {
+
+  const { isLoggedIn, role, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout(); // ini langsung clear localStorage dan update context
+    navigate("/login");
+  };
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -14,11 +23,34 @@ const Navbar = () => {
 
         {/* Desktop menu */}
         <ul className="hidden md:flex gap-6 text-[#2737af] font-medium text-lg">
+
+        {isLoggedIn && role === "owner" && (
+          <Link to="/dashboard" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Dashboard</Link>
+        )}
+
           <li><Link to="/" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Beranda</Link></li>
           <li><Link to="/about-us" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Tentang Kami</Link></li>
           <li><Link to="/data-kolam" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Data Kolam</Link></li>
           <li><Link to="/laporan-keuangan" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Laporan Keuangan</Link></li>
-          <li><Link to="/login" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Login</Link></li>
+          
+          {isLoggedIn ? (
+            <div className="flex items-center gap-3">
+              {/* Pajangan Foto Profil */}
+              <div className="w-8 h-8 rounded-full bg-white" title="Profil"></div>
+              <button onClick={handleLogout} className="text-red-500 hover:underline">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <li>
+              <Link
+                to="/login"
+                className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md"
+              >
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
 
         {/* Mobile menu button */}
