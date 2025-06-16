@@ -16,7 +16,7 @@ const errorHandler = require('./middleware/errorHandle')
 
 const app = express();
 app.use(cors({
-  origin: 'https://127.0.0.1:5173',
+  origin: 'http://localhost:5173',
   credentials: true
 }))
 

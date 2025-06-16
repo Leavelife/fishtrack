@@ -24,7 +24,9 @@ const loginSchema = Joi.object({
     .email({ tlds: { allow: false } })
     .pattern(/@gmail\.com$/)
     .required(),
-  password: Joi.string().min(7).required(),
+  password: Joi.string().min(7).required().messages({
+    'string.min': 'Password minimal 7 karakter'
+  }),
 });
 
 module.exports = {registerSchema, loginSchema};
