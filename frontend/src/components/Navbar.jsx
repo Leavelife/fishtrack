@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed font-sans bg-sky-50 bg-opacity-60 backdrop-blur-[5px] shadow-md px-6 py-4 w-screen top-0 z-50">
+    <nav className="fixed font-merri bg-[#e9e9e9] bg-opacity-60 backdrop-blur-[5px] shadow-md px-6 py-4 w-screen top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="w-40">
           <img src="/fresh fish.png"/>
@@ -22,10 +22,7 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile menu button */}
-        <button
-          className="md:hidden text-gray-700 focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <button className="md:hidden text-gray-700 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor"
             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             {isOpen ? (

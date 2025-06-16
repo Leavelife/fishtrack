@@ -9,7 +9,8 @@ export default {
       fontFamily: {
         'sans': ['Poppins', 'sans-serif'],
         'lato': ['Lato', 'sans-serif'],
-        'tinos': ['Tinos', 'serif']
+        'tinos': ['Tinos', 'serif'],
+        'merri': ['Merriweather', 'serif']
       }
     },
   },

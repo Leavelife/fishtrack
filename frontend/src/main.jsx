@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
-import MainLayout from "./layouts/MainLayout";
+import App from "./App";
 import Home from "./pages/Home";
 import DataKolam from "./pages/DataKolam";
 import AboutUs from "./pages/AboutUs";
@@ -13,7 +13,7 @@ import Login from "./pages/Login";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <App />,
     children: [
       { path: "", element: <Home /> },
       { path: "data-kolam", element: <DataKolam /> },
