@@ -1,6 +1,5 @@
 const AboutUs = () => {
     return <>
-    
     </>
 }
 

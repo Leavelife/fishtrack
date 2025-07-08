@@ -40,10 +40,10 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center font-lato bg-[#e6e6e6] items-center min-h-screen">
       <form
         onSubmit={handleLogin}
-        className="border p-6 w-80 rounded-md shadow-md"
+        className="border p-6 w-96 rounded-md bg-white bg-opacity-50 backdrop-blur-[5px] shadow-md"
       >
         <h2 className="text-center text-xl font-semibold mb-4">Login</h2>
 
@@ -52,7 +52,8 @@ const Login = () => {
           <input
             type="email"
             name="email"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Email"
+            className="w-full border rounded-md px-2 py-2  mt-1"
             onChange={handleChange}
             required
           />
@@ -63,7 +64,8 @@ const Login = () => {
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Password"
+            className="w-full border rounded-md px-2 py-2 mt-1"
             onChange={handleChange}
             required
           />
@@ -86,7 +88,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full border py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#244678]"
         >
           Submit
         </button>

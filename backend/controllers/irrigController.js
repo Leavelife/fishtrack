@@ -16,7 +16,7 @@ exports.getAllIrrigations = async (req, res, next) => {
 
 exports.getIrrigationById = async (req, res, next) => {
   try {
-    const irrigation = await Irrigation.findByPk(req.params.id);
+    const irrigation = await Irrigation.findAll({where: {pond_id: req.params.pond_id}});
     if (!irrigation) {
       return sendResponse(res, {
         statusCode: 404,
@@ -73,7 +73,7 @@ exports.updateIrrigation = async (req, res, next) => {
 
 exports.deleteIrrigation = async (req, res, next) => {
   try {
-    const deleted = await Irrigation.delete({where: {id: req.params.id}});
+    const deleted = await Irrigation.destroy({where: {id: req.params.id}});
     if (deleted === 0) {
       return sendResponse(res, {
         statusCode: 404,

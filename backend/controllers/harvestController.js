@@ -16,7 +16,7 @@ exports.getAllHarvests = async (req, res, next) => {
 
 exports.getHarvestById = async (req, res, next) => {
   try {
-    const harvest = await Harvest.findByPk(req.params.id);
+    const harvest = await Harvest.findAll({where: {pond_id: req.params.id}});
     if (!harvest) {
       return sendResponse(res, {
         statusCode: 404,

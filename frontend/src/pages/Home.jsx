@@ -32,12 +32,12 @@ const Home = () => {
   return (
     <div className="font-merri">
       {/* Hero Section */}
-      <section className="relative flex flex-col justify-center items-end text-right px-20 py-16 h-screen overflow-hidden">
+      <section className="relative flex flex-col justify-center items-end text-right px-10 lg:px-20 py-16 h-screen overflow-hidden">
         {/* Background Slider */}
         {backgroundImages.map((image, index) => (
           <div
             key={index}
-            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-screen bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
               index === currentImageIndex ? "opacity-100" : "opacity-0"
             }`}
             style={{ backgroundImage: `url(${image})` }}
@@ -48,10 +48,10 @@ const Home = () => {
 
         {/* Konten */}
         <div className="relative font-merri z-10 text-white">
-          <h1 className="text-4xl font-bold mb-4 ">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 ">
             USAHA PERIKANAN AIR TAWAR
           </h1>
-          <p className="max-w-xl mb-6 m-1 font-semibold text-lg">
+          <p className="max-w-xl mb-6 m-1 font-semibold text-md lg:text-lg">
             Mitra Andal untuk Pasokan Ikan Lele, Nila, Gurame Berkualitas
             <br />
             Kesegaran Air Tawar dalam Genggaman
@@ -62,7 +62,7 @@ const Home = () => {
             onClick={() =>
               document.getElementById("product").scrollIntoView({ behavior: "smooth" })
             }
-            className="px-6 py-2 mt-5 border rounded border-blue-100 text-lg font-bold bg-blue-50 hover:bg-[#283593] transition duration-500 ease-in-out hover:text-white hover:shadow-xl text-[#283593]"
+            className="px-6 py-2 mt-5 border rounded border-blue-100 text-md lg:text-lg font-bold bg-blue-50 hover:bg-[#283593] transition duration-500 ease-in-out hover:text-white hover:shadow-xl text-[#283593]"
           >
             All Product
           </button>
@@ -70,19 +70,19 @@ const Home = () => {
       </section>
 
       {/* Product Section */}
-      <section id="product" className="flex flex-col justify-center bg-green-50 text-[#1d2568] text-center h-screen py-12">
-        <h2 className="flex flex-col text-4xl justify-center font-semibold mb-8">PRODUK KAMI</h2>
-        <div className="flex justify-center gap-6">
-          {products.map((product, index) => (
+      <section id="product" className="flex flex-col md:justify-center bg-[#f9fafb] text-[#121747] text-center h-auto md:h-screen py-12">
+        <h2 className="text-2xl md:text-4xl justify-center font-semibold mb-8">PRODUK KAMI</h2>
+        <div className="flex flex-wrap justify-center gap-6">
+          {products.map((product, index) => ( 
             <div
               key={index}
-              className="group relative w-96 h-80 border bg-white border-gray-200 rounded-lg p-4
+              className="group relative w-60 h-40 border bg-white border-gray-200 rounded-lg p-4
                         transition duration-500 ease-in-out hover:shadow-xl hover:border-transparent">
               <div className="relative h-52 w-full overflow-hidden">
                   <img
                       src={product.image}
                       alt={product.name}
-                      className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                      className="h-auto w-auto object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                   />
                   <div
                       className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-gray-400/70 to-transparent transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-50"
@@ -96,7 +96,7 @@ const Home = () => {
       </section>
 
       {/* Company Values Section */}
-      <section className="bg-gray-100 text-[#1f2453] py-12 px-6 h-screen flex flex-col text-center">
+      <section className="bg-gray-100 text-[#121747] py-12 px-6 h-screen flex flex-col text-center">
         <div>
           <h3 className="text-4xl font-semibold mb-2">Lebih dari Sekadar Ikan</h3>
           <p className=" font-semibold mb-10 ">Kualitas yang Bisa Anda Percaya, Transparansi, <br/>dan Inovasi Merupakan Pilar Utama Perusahaan kami</p>
@@ -127,7 +127,7 @@ const Home = () => {
       </section>
 
       {/* Testimoni Section */}
-      <section className="py-12 h-screen flex flex-col justify-center font-merri text-[#1f2453] text-center">
+      <section className="py-12 h-screen flex flex-col justify-center font-merri text-[#121747] text-center">
         <h3 className="text-4xl font-semibold mb-4">Testimoni & Keunggulan Tambahan</h3>
         <p className="mb-6">Apa Kata Mitra dan Pelanggan Kami?</p>
         <div className="flex justify-center gap-6">

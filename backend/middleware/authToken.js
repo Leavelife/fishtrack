@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateToken = (req, res, next) => {
-  const token =
-    req.headers.authorization?.split(' ')[1] || // kalau kirim via header
-    req.cookies?.token;                        // kalau kirim via cookie
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1] || req.cookies?.token;   
 
   if (!token) {
     return res.status(401).json({

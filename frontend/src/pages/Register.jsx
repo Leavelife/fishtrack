@@ -43,8 +43,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <form onSubmit={handleRegister} className="border p-6 w-80 rounded-md shadow-md">
+    <div className="flex justify-center font-lato bg-[#e9e9e9] items-center min-h-screen">
+      <form onSubmit={handleRegister} className="border p-6 w-96 bg-white bg-opacity-50 backdrop-blur-[5px] rounded-md shadow-md">
         <h2 className="text-center text-xl font-semibold mb-4">Register</h2>
 
         <label className="block mb-2">
@@ -52,10 +52,11 @@ const Register = () => {
           <input
             type="text"
             name="name"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Name"
+            className="w-full border rounded-md px-2 py-2 mt-1"
             onChange={handleChange}
             required
-          />
+            />
         </label>
 
         <label className="block mb-2">
@@ -63,10 +64,11 @@ const Register = () => {
           <input
             type="email"
             name="email"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Email"
+            className="w-full border rounded-md px-2 py-2 mt-1"
             onChange={handleChange}
             required
-          />
+            />
         </label>
 
         <label className="block mb-2">
@@ -74,10 +76,11 @@ const Register = () => {
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Password"
+            className="w-full border rounded-md px-2 py-2 mt-1"
             onChange={handleChange}
             required
-          />
+            />
         </label>
 
         <label className="block mb-4">
@@ -85,7 +88,8 @@ const Register = () => {
           <input
             type={showPassword ? "text" : "password"}
             name="confirmPassword"
-            className="w-full border px-2 py-1 mt-1"
+            placeholder="Enter Your Konfirm Password"
+            className="w-full border rounded-md px-2 py-2 mt-1"
             onChange={handleChange}
             required
           />
@@ -108,7 +112,7 @@ const Register = () => {
 
         <button
           type="submit"
-          className="w-full border py-2 rounded bg-green-500 text-white hover:bg-green-600"
+          className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#27497b]"
         >
           Register
         </button>
