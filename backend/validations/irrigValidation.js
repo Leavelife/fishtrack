@@ -1,6 +1,11 @@
 const Joi = require('joi')
 
 const irrigationSchema = Joi.object({
+    id: Joi.number().integer().positive().messages({
+        'number.base': 'ID harus berupa angka',
+        'number.integer': 'ID harus bilangan bulat',
+        'number.positive': 'ID harus lebih dari 0',
+    }),
     pond_id: Joi.number().integer().positive().required().messages({
         'number.base': 'ID Kolam harus berupa angka',
         'number.integer': 'ID Kolam harus bilangan bulat',

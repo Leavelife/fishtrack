@@ -16,7 +16,7 @@ exports.getAllMortalities = async (req, res, next) => {
 
 exports.getMortalityById = async (req, res, next) => {
   try {
-    const mortality = await Mortality.findByPk(req.params.id);
+    const mortality = await Mortality.findAll({where: {pond_id: req.params.id}});
     if (!mortality) {
       return sendResponse(res, {
         statusCode: 404,

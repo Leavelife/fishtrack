@@ -9,20 +9,20 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // ini langsung clear localStorage dan update context
+    logout(); 
     navigate("/login");
   };
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed font-merri bg-[#e9e9e9] bg-opacity-60 backdrop-blur-[5px] shadow-md px-6 py-4 w-screen top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="fixed font-merri bg-[#fbfdf9] bg-opacity-70 backdrop-blur-[5px] shadow-md px-6 py-4 w-screen top-0 z-50">
+      <div className="container mx-auto w-full flex justify-between items-center">
         <Link to="/" className="w-40">
           <img src="/fresh fish.png"/>
         </Link>
 
         {/* Desktop menu */}
-        <ul className="hidden md:flex gap-6 text-[#2737af] font-medium text-lg">
+        <ul className="hidden md:flex gap-2 lg:gap-6 text-[#181f7c] text-md lg:text-md">
 
         {isLoggedIn && role === "owner" && (
           <Link to="/dashboard" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Dashboard</Link>
@@ -37,7 +37,7 @@ const Navbar = () => {
             <div className="flex items-center gap-3">
               {/* Pajangan Foto Profil */}
               <div className="w-8 h-8 rounded-full bg-white" title="Profil"></div>
-              <button onClick={handleLogout} className="text-red-500 hover:underline">
+              <button onClick={handleLogout} className="block p-2 text-red-600 rounded-md bg-[#d1d1d1] bg-opacity-10 hover:bg-opacity-60 hover:opacity-70 hover:text-red-600 hover:shadow-md">
                 Logout
               </button>
             </div>

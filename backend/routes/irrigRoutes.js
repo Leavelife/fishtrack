@@ -9,7 +9,7 @@ const irrigationValidation = require('../validations/irrigValidation');
 
 // Routes
 router.get('/', irrigationController.getAllIrrigations);
-router.get('/:id', irrigationController.getIrrigationById);
+router.get('/:pond_id', irrigationController.getIrrigationById);
 
 // middleware untuk route yang user harus login dulu
 router.use(authenticateToken);
@@ -25,7 +25,9 @@ router.put('/:id',
     irrigationController.updateIrrigation
 );
 router.delete('/:id', 
+    authenticateToken,  
     authorizeRoles('owner', 'karyawan'), 
+    validateRequest(irrigationValidation),
     irrigationController.deleteIrrigation
 );
 

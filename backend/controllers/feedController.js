@@ -20,7 +20,7 @@ exports.getAllFeeds = async (req, res, next) => {
 
 exports.getFeedById = async (req, res, next) => {
   try {
-    const feed = await Feed.findByPk(req.params.id);
+    const feed = await Feed.findAll({where: {pond_id: req.params.id}});
 
     if (!feed) {
       return next(createError(404, 'Feed not found'));

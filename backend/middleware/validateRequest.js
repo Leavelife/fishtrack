@@ -12,8 +12,6 @@ const validateRequest = (schema) => (req, res, next) => {
       data: messages,
     });
   }
-
-  // Ganti body dengan value yang sudah divalidasi dan dibersihkan
   req.body = value;
   next();
 };
