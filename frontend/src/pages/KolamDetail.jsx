@@ -8,22 +8,20 @@ import HarvestTable from '../components/HarvestTable';
 const KolamDetail = ({ kolam }) => {
   const [activeTab, setActiveTab] = useState('irrigation');
   const [data, setData] = useState(null);
-
-  const fetchData = useCallback(async (tab) => {
+  
+  const fetchData = useCallback(async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/${tab}/${kolam.id}`);
-      console.log('Fetched irrigation data:', res.data.data);
+      const res = await axios.get(`http://localhost:5000/api/${activeTab}/${kolam.id}`);
+      console.log( `Fetched ${activeTab} data:`, res.data.data);
       setData(res.data.data);
     } catch (err) {
-      console.error(`Gagal fetch data ${tab}`, err);
+      console.error(`Gagal fetch data ${activeTab}`, err);
       setData(null);
     }
-  }, [kolam,activeTab])
+  }, [kolam?.id, activeTab])
 
   useEffect(() => {
-    if (kolam) {
-      fetchData(activeTab);
-    }
+      fetchData();
   }, [fetchData]);
 
   const tabs = [
@@ -36,24 +34,26 @@ const KolamDetail = ({ kolam }) => {
   const renderTable = () => {
     switch (activeTab) {
       case 'irrigation':
-        return <IrrigTable data={data} />;
+        return <IrrigTable data={data} kolam={kolam} fetchData={fetchData} />;
       case 'feeds':
-        return <FeedTable data={data} />;
+        return <FeedTable data={data} kolam={kolam} fetchData={fetchData} />;
       case 'mortalities':
-        return <MortalTable data={data} />;
+        return <MortalTable data={data} kolam={kolam} fetchData={fetchData} />;
       case 'harvest':
-        return <HarvestTable data={data} />;
+        return <HarvestTable data={data} kolam={kolam} fetchData={fetchData} />;
       default:
         return <p>Halaman tidak ada</p>
     }
   }
 
   return (
-    <div>
+    <div className='h-full'>
       <p className="text-xl font-bold mb-4">Data Kolam {kolam.id}</p>
       <div>
-        <p><>Jenis Ikan: {kolam.fish_type} </></p>
-        <p><>Status: {kolam.status} </></p>
+        <p>Jenis Ikan: {kolam.fish_type}</p>
+        <p>Status: {kolam.status}</p>
+        <p>Ukuran Kolam : {kolam.length} x {kolam.width} </p>
+
       </div>
 
       {/* Tab Navigation */}

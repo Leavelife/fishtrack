@@ -41,6 +41,9 @@ const MortalTable = ({data}) => {
         ) : (
             <p>Memuat data irigasi...</p>
         )}
+        {isLoggedIn && (role === 'owner' || role === 'karyawan') && (  
+            <button className="bg-[#fafafa] hover:bg-[#173b71] border border-[#173b71] text-[#173b71] hover:text-white px-4 py-1 mx-1 my-2 rounded-md">+ Tambah</button>
+        )}
       </div>
     )
 }
