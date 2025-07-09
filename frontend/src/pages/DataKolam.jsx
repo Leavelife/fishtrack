@@ -30,7 +30,7 @@ const DataKolam = () => {
           <div
           key={kolam.id}
           onClick={() => setSelectedKolam(kolam)}
-          className={`flex gap-4 cursor-pointer pl-4 p-2 mb-2 border border-white rounded ${
+          className={`flex gap-4 cursor-pointer pl-4 p-2 mb-2 border-b border-white rounded ${
             selectedKolam?.id === kolam.id ? 'bg-[#173b71] text-white' : ''
           }`}
         >

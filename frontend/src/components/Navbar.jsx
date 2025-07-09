@@ -15,7 +15,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed font-merri bg-[#fbfdf9] bg-opacity-70 backdrop-blur-[5px] shadow-md px-6 py-4 w-screen top-0 z-50">
+    <nav className="fixed font-merri bg-[#fbfdf9] bg-opacity-70 backdrop-blur-[5px] shadow-md px-6 py-3 w-screen top-0 z-50">
       <div className="container mx-auto w-full flex justify-between items-center">
         <Link to="/" className="w-40">
           <img src="/fresh fish.png"/>
