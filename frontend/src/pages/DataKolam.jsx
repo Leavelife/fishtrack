@@ -7,7 +7,7 @@ const DataKolam = () => {
     const [selectedKolam, setSelectedKolam] = useState(null);
 
     useEffect(() => {
-      axios.get('http://localhost:5000/api/ponds')
+      axios.get('http://192.168.100.219:5000/api/ponds')
         .then(response => {
           setKolamList(response.data.data);
           if (response.data.data.length > 0) {

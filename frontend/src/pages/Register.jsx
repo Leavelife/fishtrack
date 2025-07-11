@@ -24,7 +24,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post("http://192.168.100.219:5000/api/auth/register", {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -49,58 +49,26 @@ const Register = () => {
 
         <label className="block mb-2">
           <span>Nama</span>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Your Name"
-            className="w-full border rounded-md px-2 py-2 mt-1"
-            onChange={handleChange}
-            required
-            />
+          <input type="text" name="name" placeholder="Enter Your Name" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required />
         </label>
 
         <label className="block mb-2">
           <span>Email</span>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Your Email"
-            className="w-full border rounded-md px-2 py-2 mt-1"
-            onChange={handleChange}
-            required
-            />
+          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required/>
         </label>
 
         <label className="block mb-2">
           <span>Password</span>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter Your Password"
-            className="w-full border rounded-md px-2 py-2 mt-1"
-            onChange={handleChange}
-            required
-            />
+          <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter Your Password" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required/>
         </label>
 
         <label className="block mb-4">
           <span>Konfirmasi Password</span>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="confirmPassword"
-            placeholder="Enter Your Konfirm Password"
-            className="w-full border rounded-md px-2 py-2 mt-1"
-            onChange={handleChange}
-            required
-          />
+          <input type={showPassword ? "text" : "password"} name="confirmPassword" placeholder="Enter Your Konfirm Password" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required/>
         </label>
 
         <label className="block mb-3">
-          <input
-            type="checkbox"
-            className="mr-2"
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
+          <input type="checkbox" className="mr-2" onChange={() => setShowPassword((prev) => !prev)}/>
           Show Password
         </label>
 
@@ -110,18 +78,11 @@ const Register = () => {
           </div>
         )}
 
-        <button
-          type="submit"
-          className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#27497b]"
-        >
-          Register
-        </button>
+        <button type="submit" className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#27497b]">Register</button>
 
         <p className="text-center text-sm mt-4">
           Sudah punya akun?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login
-          </a>
+          <a href="/login" className="text-blue-600 hover:underline">Login</a>
         </p>
       </form>
     </div>
