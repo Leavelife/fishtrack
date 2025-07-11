@@ -179,18 +179,18 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         )}
         
         {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-5 rounded-md shadow-md">
-            <p className="mb-4 p-2">Yakin ingin menghapus data ini?</p>
-            <div className="flex justify-end gap-2">
-                <button onClick={() => setShowDeleteModal(false)}>Batal</button>
-                <button onClick={handleDelete} className="bg-white border  hover:bg-red-700 transition-all ease-in-out text-red-700 hover:text-white px-3 py-1 rounded">Hapus</button>
-                {errorMessage && (
-                    <p className="text-red-600 mt-2 text-sm">{errorMessage}</p>
-                )}
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-5 rounded-md shadow-md">
+                <p className="mb-4 p-2">Yakin ingin menghapus data ini?</p>
+                <div className="flex justify-end gap-2">
+                    <button onClick={() => setShowDeleteModal(false)}>Batal</button>
+                    <button onClick={handleDelete} className="bg-white border  hover:bg-red-700 transition-all ease-in-out text-red-700 hover:text-white px-3 py-1 rounded">Hapus</button>
+                    {errorMessage && (
+                        <p className="text-red-600 mt-2 text-sm">{errorMessage}</p>
+                    )}
+                </div>
+                </div>
             </div>
-            </div>
-        </div>
         )}
 
       </div>
