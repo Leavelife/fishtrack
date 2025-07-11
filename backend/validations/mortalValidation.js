@@ -15,9 +15,9 @@ const mortalitySchema = Joi.object({
     cause: Joi.string().allow(null, '').max(255).messages({
         'string.max': 'Catatan maksimal 255 karakter',
     }),
-    amount: Joi.number().positive().allow(null, '').messages({
+    amount: Joi.number().positive().allow(null, '', 0).messages({
         'number.base': 'Jumlah harus berupa angka',
-        'number.positive': 'Durasi harus lebih dari 0',
+        'number.positive': 'Jumlah tidak boleh minus',
     }),
     estimasi_mati: Joi.string().max(10).required().messages({
         'string.base': 'Estimasi mati harus berupa teks',

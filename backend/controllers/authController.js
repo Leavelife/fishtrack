@@ -17,13 +17,13 @@ exports.refreshToken = async (req, res) => {
     const accessToken = jwt.sign(
       { id: decoded.id },
       process.env.JWT_SECRET,
-      { expiresIn: '30m' }
+      { expiresIn: '60m' }
     );
 
     res.cookie('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000
+      maxAge: 60 * 60 * 1000
     });
 
     return res.json({ success: true, message: 'Access token refreshed' });
@@ -65,7 +65,7 @@ exports.register = async (req, res, next) => {
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, role: newUser.role },
       process.env.JWT_SECRET,
-      { expiresIn: '30m' }
+      { expiresIn: '60m' }
     );
     const refreshToken = jwt.sign(
       { id: newUser.id },
@@ -77,7 +77,7 @@ exports.register = async (req, res, next) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000 
+      maxAge: 60 * 60 * 1000 
     });
 
     res.cookie('refreshToken', refreshToken, {
@@ -139,7 +139,7 @@ exports.login = async (req, res, next) => {
     const token = jwt.sign(
       { id: user.id, name: user.name, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '30m' }
+      { expiresIn: '60m' }
     );
     const refreshToken = jwt.sign(
       { id: user.id },
