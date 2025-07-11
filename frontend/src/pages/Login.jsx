@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("http://192.168.100.219:5000/api/auth/login", {
         email: formData.email,
         password: formData.password,
       });
@@ -41,42 +41,19 @@ const Login = () => {
 
   return (
     <div className="flex justify-center font-lato bg-[#e6e6e6] items-center min-h-screen">
-      <form
-        onSubmit={handleLogin}
-        className="border p-6 w-96 rounded-md bg-white bg-opacity-50 backdrop-blur-[5px] shadow-md"
-      >
+      <form onSubmit={handleLogin} className="border p-6 w-96 rounded-md bg-white bg-opacity-50 backdrop-blur-[5px] shadow-md">
         <h2 className="text-center text-xl font-semibold mb-4">Login</h2>
-
+        
         <label className="block mb-2">
           <span>Email</span>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter Your Email"
-            className="w-full border rounded-md px-2 py-2  mt-1"
-            onChange={handleChange}
-            required
-          />
+          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2  mt-1" onChange={handleChange} required/>
         </label>
-
         <label className="block mb-2">
           <span>Password</span>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            placeholder="Enter Your Password"
-            className="w-full border rounded-md px-2 py-2 mt-1"
-            onChange={handleChange}
-            required
-          />
+          <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter Your Password" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required/>
         </label>
-
         <label className="block mb-4">
-          <input
-            type="checkbox"
-            className="mr-2"
-            onChange={() => setShowPassword((prev) => !prev)}
-          />
+          <input type="checkbox" className="mr-2" onChange={() => setShowPassword((prev) => !prev)}/>
           Show Password
         </label>
 
@@ -86,18 +63,10 @@ const Login = () => {
           </div>
         )}
 
-        <button
-          type="submit"
-          className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#244678]"
-        >
-          Submit
-        </button>
-
+        <button type="submit" className="w-full border py-2 rounded-lg bg-[#173b71] text-white hover:bg-[#244678]">Submit</button>
         <p className="text-center text-sm mt-4">
           Belum punya akun?{" "}
-          <a href="/register" className="text-blue-600 hover:underline">
-            Daftar
-          </a>
+          <a href="/register" className="text-blue-600 hover:underline">Daftar</a>
         </p>
       </form>
     </div>

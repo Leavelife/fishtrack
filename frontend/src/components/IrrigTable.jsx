@@ -3,7 +3,6 @@ import { useState } from "react";
 import axios from "axios";
 
 const IrrigTable = ({data, fetchData, kolam}) => {
-    console.log('data:', data);
 
     const { isLoggedIn, role } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
@@ -18,8 +17,8 @@ const IrrigTable = ({data, fetchData, kolam}) => {
     const [showEditModal, setShowEditModal] = useState(false);
     
     const handleEditClick = (item) => {
-      setEditData(item);
-      setShowEditModal(true);
+        setEditData(item);
+        setShowEditModal(true);
     };    
 
     const handleAddData = async () => {
@@ -29,20 +28,13 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         }
         try {
             const token = localStorage.getItem('accessToken');
-            console.log("Mau kirim:", {
-                irrigation_date: newData.irrigation_date,
-                duration_minutes: newData.duration_minutes,
-                notes: newData.notes,
-                pond_id: kolam?.id,
-              });
-        
             await axios.post(
-                `http://localhost:5000/api/irrigation`,
+                `http://192.168.100.219:5000/api/irrigation`,
                 {
-                irrigation_date: newData.irrigation_date,
-                duration_minutes: newData.duration_minutes,
-                notes: newData.notes || '',
-                pond_id: kolam.id, 
+                    irrigation_date: newData.irrigation_date,
+                    duration_minutes: newData.duration_minutes,
+                    notes: newData.notes || '',
+                    pond_id: kolam.id, 
                 },
                 {
                 headers: {
@@ -60,33 +52,50 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         }
     };
       
-
     const handleUpdate = async () => {
         try {
         const token = localStorage.getItem('accessToken');
       
           await axios.put(
-            `http://localhost:5000/api/irrigation/${editData.id}`,
+            `http://192.168.100.219:5000/api/irrigation/${editData.id}`,
             {
-              pond_id: editData.pond_id,
-              irrigation_date: editData.irrigation_date,
-              duration_minutes: editData.duration_minutes,
-              notes: editData.notes,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-              withCredentials: true,
-            }
-          );
-      
-          setShowEditModal(false);
-          await fetchData(); // refresh data kolam
+                pond_id: editData.pond_id,
+                irrigation_date: editData.irrigation_date,
+                duration_minutes: editData.duration_minutes,
+                notes: editData.notes,
+                },
+                {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+                }
+            );
+        
+            setShowEditModal(false);
+            await fetchData(); // refresh data kolam
         } catch (err) {
-          console.error('Gagal update:', err);
+            console.error('Gagal update:', err);
         }
-      };
+    };
+    const handleDelete = async () => {
+        try {
+            const token = localStorage.getItem('accessToken');
+            await axios.delete(`http://192.168.100.219:5000/api/irrigation/${selectedItemId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            });
+            setShowDeleteModal(false);
+            await fetchData();
+            setErrorMessage('');
+        } catch (err) {
+            const msg = err?.response?.data?.message || 'Gagal menghapus data';
+            console.error(`Gagal hapus ${selectedItemId}:`, err);
+            setErrorMessage(msg)
+        }
+    }
 
     return (
         <div className="border border-white rounded">
@@ -131,27 +140,13 @@ const IrrigTable = ({data, fetchData, kolam}) => {
                 <h2 className="text-lg font-semibold mb-4">Tambah Data Irigasi</h2>
 
                 <label className="block mb-2 text-sm">Tanggal Irigasi</label>
-                <input
-                    type="date"
-                    value={newData.irrigation_date}
-                    onChange={(e) => setNewData({ ...newData, irrigation_date: e.target.value })}
-                    className="w-full border px-2 py-1 mb-3 rounded"
-                />
+                <input type="date" value={newData.irrigation_date} onChange={(e) => setNewData({ ...newData, irrigation_date: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
 
                 <label className="block mb-2 text-sm">Durasi (menit)</label>
-                <input
-                    type="number"
-                    value={newData.duration_minutes}
-                    onChange={(e) => setNewData({ ...newData, duration_minutes: e.target.value })}
-                    className="w-full border px-2 py-1 mb-3 rounded"
-                />
+                <input type="number" value={newData.duration_minutes} onChange={(e) => setNewData({ ...newData, duration_minutes: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
 
                 <label className="block mb-2 text-sm">Catatan</label>
-                <textarea
-                    value={newData.notes}
-                    onChange={(e) => setNewData({ ...newData, notes: e.target.value })}
-                    className="w-full border px-2 py-1 mb-3 rounded"
-                />
+                <textarea value={newData.notes} onChange={(e) => setNewData({ ...newData, notes: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
 
                 <div className="flex justify-end gap-2 mt-4">
                     <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-gray-300 rounded">Batal</button>
@@ -167,21 +162,11 @@ const IrrigTable = ({data, fetchData, kolam}) => {
                 <h2 className="text-lg font-semibold mb-4">Edit Data Irigasi</h2>
 
                 <label className="block mb-2 text-sm">Tanggal Irigasi</label>
-                <input
-                    type="date"
-                    value={editData.irrigation_date}
-                    onChange={(e) => setEditData({ ...editData, irrigation_date: e.target.value })}
-                    className="w-full border px-2 py-1 mb-3 rounded"
-                />
+                <input type="date" value={editData.irrigation_date} onChange={(e) => setEditData({ ...editData, irrigation_date: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
 
                 <label className="block mb-2 text-sm">Durasi (menit)</label>
-                <input
-                    type="number"
-                    value={editData.duration_minutes}
-                    onChange={(e) => setEditData({ ...editData, duration_minutes: e.target.value })}
-                    className="w-full border px-2 py-1 mb-3 rounded"
-                />
-
+                <input type="number" value={editData.duration_minutes} onChange={(e) => setEditData({ ...editData, duration_minutes: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
+                
                 <label className="block mb-2 text-sm">Catatan</label>
                 <textarea value={editData.notes || ''} onChange={(e) => setEditData({ ...editData, notes: e.target.value })} className="w-full border px-2 py-1 mb-3 rounded"/>
 
@@ -199,30 +184,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
             <p className="mb-4 p-2">Yakin ingin menghapus data ini?</p>
             <div className="flex justify-end gap-2">
                 <button onClick={() => setShowDeleteModal(false)}>Batal</button>
-                <button
-                onClick={async () => {
-                    try {
-                        const token = localStorage.getItem('accessToken');
-                        console.log('token:', token);
-                        await axios.delete(`http://localhost:5000/api/irrigation/${selectedItemId}`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            },
-                            withCredentials: true
-                        });
-                        setShowDeleteModal(false);
-                        await fetchData();
-                        setErrorMessage('');
-                    } catch (err) {
-                        const msg = err?.response?.data?.message || 'Gagal menghapus data';
-                        console.error(`Gagal hapus ${selectedItemId}:`, err);
-                        setErrorMessage(msg)
-                    }
-                }}
-                className="bg-white border  hover:bg-red-700 transition-all ease-in-out text-red-700 hover:text-white px-3 py-1 rounded"
-                >
-                Hapus
-                </button>
+                <button onClick={handleDelete} className="bg-white border  hover:bg-red-700 transition-all ease-in-out text-red-700 hover:text-white px-3 py-1 rounded">Hapus</button>
                 {errorMessage && (
                     <p className="text-red-600 mt-2 text-sm">{errorMessage}</p>
                 )}
