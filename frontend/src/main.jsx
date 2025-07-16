@@ -6,7 +6,6 @@ import "./index.css";
 import App from "./App";
 import Home from "./pages/Home";
 import DataKolam from "./pages/DataKolam";
-import AboutUs from "./pages/AboutUs";
 import Laporan from "./pages/Laporan";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,7 +19,6 @@ const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "dashboard", element: <Dashboard /> },
       { path: "data-kolam", element: <DataKolam /> },
-      { path: "about-us", element: <AboutUs /> },
       { path: "laporan-keuangan", element: <Laporan /> },
       { path: "login", element: <Login /> },
       { path: "/register", element: <Register /> },

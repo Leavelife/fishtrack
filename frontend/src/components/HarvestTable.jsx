@@ -27,7 +27,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:5000/api/harvest`,
+                `http://192.168.100.219:22781/api/harvest`,
                 {
                     harvest_date: newData.harvest_date  ,
                     weight_kg: newData.weight_kg,
@@ -55,7 +55,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
         await axios.put(
-            `http://192.168.100.219:5000/api/harvest/${editData.id}`, {
+            `http://192.168.100.219:22781/api/harvest/${editData.id}`, {
                 pond_id: editData.pond_id,
                 harvest_date: editData.harvest_date,
                 weight_kg: editData.weight_kg,
@@ -79,7 +79,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:5000/api/harvest/${selectedItemId}`, {
+            await axios.delete(`http://192.168.100.219:22781/api/harvest/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

@@ -53,8 +53,8 @@ app.use(errorHandler)
 sequelize.sync()
   .then(() => {
     console.log('Database & tabel Sequelize sinkron.');
-    app.listen(process.env.PORT, '0.0.0.0', () => {
-      console.log(`Server berjalan di port ${process.env.PORT}`);
+    app.listen(process.env.DB_PORT, () => {
+      console.log(`Server berjalan di port ${process.env.DB_PORT}`);
     });
   })
   .catch((err) => {

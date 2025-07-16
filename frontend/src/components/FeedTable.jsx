@@ -29,7 +29,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:5000/api/feeds`,
+                `http://192.168.100.219:22781/api/feeds`,
                 {
                     feed_type: newData.feed_type,
                     feed_date: newData.feed_date,
@@ -56,7 +56,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
         await axios.put(
-            `http://192.168.100.219:5000/api/feeds/${editData.id}`, {
+            `http://192.168.100.219:22781/api/feeds/${editData.id}`, {
                 pond_id: editData.pond_id,
                 feed_type: editData.feed_type,
                 feed_date: editData.feed_date,
@@ -79,7 +79,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:5000/api/feeds/${selectedItemId}`, {
+            await axios.delete(`http://192.168.100.219:22781/api/feeds/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

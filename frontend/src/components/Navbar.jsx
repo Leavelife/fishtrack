@@ -29,7 +29,6 @@ const Navbar = () => {
         )}
 
           <li><Link to="/" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Beranda</Link></li>
-          <li><Link to="/about-us" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Tentang Kami</Link></li>
           <li><Link to="/data-kolam" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Data Kolam</Link></li>
           <li><Link to="/laporan-keuangan" className="block p-2 rounded-md transition duration-500 ease-in-out hover:bg-[#283593] hover:text-white hover:shadow-md">Laporan Keuangan</Link></li>
           

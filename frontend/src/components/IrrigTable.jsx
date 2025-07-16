@@ -29,7 +29,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:5000/api/irrigation`,
+                `http://192.168.100.219:22781/api/irrigation`,
                 {
                     irrigation_date: newData.irrigation_date,
                     duration_minutes: newData.duration_minutes,
@@ -57,7 +57,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
           await axios.put(
-            `http://192.168.100.219:5000/api/irrigation/${editData.id}`,
+            `http://192.168.100.219:22781/api/irrigation/${editData.id}`,
             {
                 pond_id: editData.pond_id,
                 irrigation_date: editData.irrigation_date,
@@ -81,7 +81,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:5000/api/irrigation/${selectedItemId}`, {
+            await axios.delete(`http://192.168.100.219:22781/api/irrigation/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

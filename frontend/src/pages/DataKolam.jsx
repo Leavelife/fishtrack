@@ -7,7 +7,7 @@ const DataKolam = () => {
     const [selectedKolam, setSelectedKolam] = useState(null);
 
     useEffect(() => {
-      axios.get('http://192.168.100.219:5000/api/ponds')
+      axios.get('http://192.168.100.219:22781/api/ponds')
         .then(response => {
           setKolamList(response.data.data);
           if (response.data.data.length > 0) {
@@ -43,7 +43,7 @@ const DataKolam = () => {
         {selectedKolam ? (
           <KolamDetail kolam={selectedKolam} />
         ) : (
-          <div>Pilih salah satu kolam untuk melihat detail</div>
+          <div>Memuat Data Kolam....</div>
         )}
       </main>
     </div>

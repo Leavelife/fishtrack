@@ -11,7 +11,7 @@ const KolamDetail = ({ kolam }) => {
   
   const fetchData = useCallback(async () => {
     try {
-      const res = await axios.get(`http://192.168.100.219:5000/api/${activeTab}/${kolam.id}`);
+      const res = await axios.get(`http://192.168.100.219:22781/api/${activeTab}/${kolam.id}`);
       setData(res.data.data);
     } catch (err) {
       console.error(`Gagal fetch data ${activeTab}`, err);

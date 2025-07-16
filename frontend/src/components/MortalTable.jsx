@@ -29,7 +29,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:5000/api/mortalities`,
+                `http://192.168.100.219:22781/api/mortalities`,
                 {
                     date: newData.date,
                     cause: newData.cause,
@@ -58,7 +58,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
           await axios.put(
-            `http://192.168.100.219:5000/api/mortalities/${editData.id}`,
+            `http://192.168.100.219:22781/api/mortalities/${editData.id}`,
             {
                 date: editData.date,
                 cause: editData.cause,
@@ -84,7 +84,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:5000/api/mortalities/${selectedItemId}`, {
+            await axios.delete(`http://192.168.100.219:22781/api/mortalities/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -108,7 +108,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
                 <tr className="bg-white text-black">
                     <th className="p-2 border-b border-blue-500">Tanggal</th>
                     <th className="p-2 border-b border-blue-500">Penyebab</th>
-                    <th className="p-2 border-b border-blue-500">Jumlah</th>
+                    <th className="p-2 border-b border-blue-500">Jumlah Kematian</th>
                     <th className="p-2 border-b border-blue-500">Estimasi kematian</th>
                     <th className="p-2 border-b border-blue-500">Catatan</th>
                     {isLoggedIn && (role === 'owner' || role === 'karyawan') && (

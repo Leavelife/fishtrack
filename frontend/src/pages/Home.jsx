@@ -59,11 +59,8 @@ const Home = () => {
             Modernisasi Perikanan, Hasil Terbaik untuk Anda
           </p>
           <button
-            onClick={() =>
-              document.getElementById("product").scrollIntoView({ behavior: "smooth" })
-            }
-            className="px-6 py-2 mt-5 border rounded border-blue-100 text-md lg:text-lg font-bold bg-blue-50 hover:bg-[#283593] transition duration-500 ease-in-out hover:text-white hover:shadow-xl text-[#283593]"
-          >
+            onClick={() => document.getElementById("product").scrollIntoView({ behavior: "smooth" })}
+            className="px-6 py-2 mt-5 border rounded border-blue-100 text-md lg:text-lg font-bold bg-blue-50 bg-opacity-80 hover:bg-[#283593] transition duration-500 ease-in-out hover:text-white hover:shadow-xl text-[#283593]">
             All Product
           </button>
         </div>
