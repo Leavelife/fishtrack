@@ -17,7 +17,7 @@ const errorHandler = require('./middleware/errorHandle')
 const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
-  'http://192.168.100.219:5173'
+  'https://marvelous-stillness-production-8517.up.railway.app'
 ];
 
 app.use(cors({

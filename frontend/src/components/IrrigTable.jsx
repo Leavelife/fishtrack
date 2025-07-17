@@ -29,7 +29,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:22781/api/irrigation`,
+                `${import.meta.env.VITE_URL_DOMAIN}/api/irrigation`,
                 {
                     irrigation_date: newData.irrigation_date,
                     duration_minutes: newData.duration_minutes,
@@ -57,7 +57,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
           await axios.put(
-            `http://192.168.100.219:22781/api/irrigation/${editData.id}`,
+            `${import.meta.env.VITE_URL_DOMAIN}/api/irrigation/${editData.id}`,
             {
                 pond_id: editData.pond_id,
                 irrigation_date: editData.irrigation_date,
@@ -81,7 +81,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:22781/api/irrigation/${selectedItemId}`, {
+            await axios.delete(`${import.meta.env.VITE_URL_DOMAIN}/api/irrigation/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -100,7 +100,7 @@ const IrrigTable = ({data, fetchData, kolam}) => {
     return (
         <div className="border border-white rounded">
         {data ? (
-        <table className="w-5/6 border border-white text-sm ">
+        <table className="w-5/6 border border-white text-[10px] md:text-sm ">
             <thead>
                 <tr className="bg-white text-black">
                 <th className="p-2 border-b border-blue-500">Tanggal Irigasi</th>

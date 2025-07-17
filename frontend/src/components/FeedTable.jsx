@@ -29,7 +29,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:22781/api/feeds`,
+                `${import.meta.env.VITE_URL_DOMAIN}/api/feeds`,
                 {
                     feed_type: newData.feed_type,
                     feed_date: newData.feed_date,
@@ -56,7 +56,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
         await axios.put(
-            `http://192.168.100.219:22781/api/feeds/${editData.id}`, {
+            `${import.meta.env.VITE_URL_DOMAIN}/api/feeds/${editData.id}`, {
                 pond_id: editData.pond_id,
                 feed_type: editData.feed_type,
                 feed_date: editData.feed_date,
@@ -79,7 +79,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:22781/api/feeds/${selectedItemId}`, {
+            await axios.delete(`${import.meta.env.VITE_URL_DOMAIN}/api/feeds/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -98,7 +98,7 @@ const FeedTable = ({data, fetchData, kolam}) => {
     return (
         <div className="border border-white rounded">
         {data ? (
-        <table className="w-5/6 border border-white text-sm ">
+        <table className="w-full md:w-5/6 border border-white text-[12px] md:text-sm ">
             <thead>
                 <tr className="bg-white text-black">
                 <th className="p-2 border-b border-blue-500">Jenis Pakan</th>
@@ -117,8 +117,10 @@ const FeedTable = ({data, fetchData, kolam}) => {
                         <td className="text-center p-3">{item.amount_kg} Kg</td>
                         {isLoggedIn && (role === 'owner' || role === 'karyawan') && (
                             <td className="text-center p-3">
-                                <button onClick={() => handleEditClick(item)} className="bg-[#fafafa] hover:bg-[#173b71] border border-[#173b71] text-[#173b71] hover:text-white px-4 py-1 mx-1 rounded-md">Edit</button>
-                                <button onClick={() => {setSelectedItemId(item.id); setShowDeleteModal(true)}} className="bg-[#fafafa] hover:bg-red-600 text-red-600 border border-red-600 hover:text-white px-4 py-1 mx-1 rounded-md">Hapus</button>
+                                <div className="flex justify-center gap-2">
+                                    <button onClick={() => handleEditClick(item)} className="bg-[#fafafa] hover:bg-[#173b71] border border-[#173b71] text-[#173b71] hover:text-white px-4 py-1 mx-1 rounded-md">Edit</button>
+                                    <button onClick={() => {setSelectedItemId(item.id); setShowDeleteModal(true)}} className="bg-[#fafafa] hover:bg-red-600 text-red-600 border border-red-600 hover:text-white px-4 py-1 mx-1 rounded-md">Hapus</button>
+                                </div>
                             </td>
                         )}
                     </tr>

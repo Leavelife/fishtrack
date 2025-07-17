@@ -63,11 +63,19 @@ const Navbar = () => {
       {/* Mobile menu */}
       {isOpen && (
         <ul className="md:hidden mt-4 flex flex-col transition duration-300 ease-in-out gap-4 text-gray-700 font-medium px-6">
+          {isLoggedIn && role === "owner" && (
+            <li><Link to="/dashboard">Dashboard</Link></li>
+          )}
           <li><Link to="/">Beranda</Link></li>
-          <li><Link to="/about-us">Tentang Kami</Link></li>
           <li><Link to="/data-kolam">Data Kolam</Link></li>
           <li><Link to="/laporan-keuangan">Laporan Keuangan</Link></li>
-          <li><Link to="/login">Login</Link></li>
+          {isLoggedIn ? (
+            <li>
+              <button onClick={handleLogout} className="text-red-600">Logout</button>
+            </li>
+          ) : (
+            <li><Link to="/login">Login</Link></li>
+          )}
         </ul>
       )}
     </nav>

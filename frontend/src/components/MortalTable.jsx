@@ -29,7 +29,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:22781/api/mortalities`,
+                `${import.meta.env.VITE_URL_DOMAIN}/api/mortalities`,
                 {
                     date: newData.date,
                     cause: newData.cause,
@@ -58,7 +58,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
           await axios.put(
-            `http://192.168.100.219:22781/api/mortalities/${editData.id}`,
+            `${import.meta.env.VITE_URL_DOMAIN}/api/mortalities/${editData.id}`,
             {
                 date: editData.date,
                 cause: editData.cause,
@@ -84,7 +84,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:22781/api/mortalities/${selectedItemId}`, {
+            await axios.delete(`${import.meta.env.VITE_URL_DOMAIN}/api/mortalities/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -103,7 +103,7 @@ const MortalTable = ({data, fetchData, kolam}) => {
     return (
         <div className="border border-white rounded">
         {data ? (
-        <table className="w-11/12 border border-white text-sm ">
+        <table className="w-11/12 border border-white text-[10px] md:text-sm ">
             <thead>
                 <tr className="bg-white text-black">
                     <th className="p-2 border-b border-blue-500">Tanggal</th>

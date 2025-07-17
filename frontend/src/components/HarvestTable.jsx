@@ -27,7 +27,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
         try {
             const token = localStorage.getItem('accessToken');
             await axios.post(
-                `http://192.168.100.219:22781/api/harvest`,
+                `${import.meta.env.VITE_URL_DOMAIN}/api/harvest`,
                 {
                     harvest_date: newData.harvest_date  ,
                     weight_kg: newData.weight_kg,
@@ -55,7 +55,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
         const token = localStorage.getItem('accessToken');
       
         await axios.put(
-            `http://192.168.100.219:22781/api/harvest/${editData.id}`, {
+            `${import.meta.env.VITE_URL_DOMAIN}/api/harvest/${editData.id}`, {
                 pond_id: editData.pond_id,
                 harvest_date: editData.harvest_date,
                 weight_kg: editData.weight_kg,
@@ -79,7 +79,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('accessToken');
-            await axios.delete(`http://192.168.100.219:22781/api/harvest/${selectedItemId}`, {
+            await axios.delete(`${import.meta.env.VITE_URL_DOMAIN}/api/harvest/${selectedItemId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -98,7 +98,7 @@ const HarvestTable = ({data, fetchData, kolam}) => {
     return (
         <div className="border border-white rounded">
         {data ? (
-        <table className="w-5/6 border border-white text-sm ">
+        <table className="w-5/6 border border-white text-[10px] md:text-sm ">
             <thead>
                 <tr className="bg-white text-black">
                 <th className="p-2 border-b border-blue-500">Tanggal</th>

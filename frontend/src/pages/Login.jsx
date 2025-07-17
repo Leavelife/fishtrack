@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://192.168.100.219:22781/api/auth/login", {
+      const res = await axios.post(`${import.meta.env.VITE_URL_DOMAIN}/api/auth/login`, {
         email: formData.email,
         password: formData.password,
       });
@@ -46,7 +46,7 @@ const Login = () => {
         
         <label className="block mb-2">
           <span>Email</span>
-          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2  mt-1" onChange={handleChange} required/>
+          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2  mt-1" onChange={handleChange} required autoComplete="current-password"/>
         </label>
         <label className="block mb-2">
           <span>Password</span>
