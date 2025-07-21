@@ -30,7 +30,7 @@ const DataKolam = () => {
             <div
             key={kolam.id}
             onClick={() => setSelectedKolam(kolam)}
-            className={`flex justify-between md:justify-start md:w-full text-[12px] md:text-base cursor-pointer py-1 md:py-3 px-3 mb-2 border-b border-white rounded ${
+            className={`flex justify-between md:justify-start md:w-full text-[12px] md:text-base cursor-pointer py-1 md:py-3 px-3 border-b border-white rounded ${
               selectedKolam?.id === kolam.id ? 'bg-[#173b71] text-white' : ''
             }`}
             >

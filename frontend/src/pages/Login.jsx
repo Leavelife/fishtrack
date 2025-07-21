@@ -46,11 +46,11 @@ const Login = () => {
         
         <label className="block mb-2">
           <span>Email</span>
-          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2  mt-1" onChange={handleChange} required autoComplete="current-password"/>
+          <input type="email" name="email" placeholder="Enter Your Email" className="w-full border rounded-md px-2 py-2  mt-1" onChange={handleChange} required/>
         </label>
         <label className="block mb-2">
           <span>Password</span>
-          <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter Your Password" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required/>
+          <input type={showPassword ? "text" : "password"} name="password" placeholder="Enter Your Password" className="w-full border rounded-md px-2 py-2 mt-1" onChange={handleChange} required autoComplete="current-password"/>
         </label>
         <label className="block mb-4">
           <input type="checkbox" className="mr-2" onChange={() => setShowPassword((prev) => !prev)}/>

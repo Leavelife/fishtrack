@@ -32,7 +32,7 @@ const WeatherCard = () => {
             <div>
                 <h2 className="text-lg font-semibold">{weather.name}</h2>
                 <p className="text-sm text-gray-600 capitalize">
-                {weather.weather[0].description}
+                {weather.weather[0].description}    
                 </p>
                 <p className="text-xl font-bold">{weather.main.temp}°C</p>
                 <p className="text-sm text-gray-600">Angin: {weather.wind.speed} m/s</p>
