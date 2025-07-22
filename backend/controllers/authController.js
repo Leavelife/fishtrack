@@ -1,8 +1,11 @@
 const bcrypt = require('bcryptjs');
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
-const sendResponse = require('../utils/sendResponse');
+const sendResponse = require('../utils/sendResponse');  
 const { registerSchema, loginSchema } = require('../validations/authValidation');
+const admin = require('../utils/firebaseAdmin'); 
 
 exports.refreshToken = async (req, res) => {
   const token = req.cookies?.refreshToken;
@@ -105,74 +108,90 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
-  const { error, value } = loginSchema.validate(req.body);
-  if (error) {
-    return sendResponse(res, {
-      statusCode: 400,
-      success: false,
-      message: error.details[0].message,
-    });
-  }
-
-  const { email, password } = value;
+exports.googleLogin = async (req, res) => {
+  const { idToken } = req.body;
 
   try {
-    const user = await User.findOne({ where: { email } });
+    // Verifikasi token Google
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name } = payload;
+
+    // Cari user berdasarkan email
+    let user = await User.findOne({ where: { email } });
+
+    // Jika belum ada, buat user baru
     if (!user) {
-      return sendResponse(res, {
-        statusCode: 401,
-        success: false,
-        message: 'Invalid email or password',
+      user = await User.create({
+        name,
+        email,
+        password: null, // karena login Google, tidak pakai password
+        role: "user",   // default role
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return sendResponse(res, {
-        statusCode: 401,
-        success: false,
-        message: 'Invalid email or password',
+    // Buat JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Google login error:", error);
+    res.status(401).json({ message: "Invalid Google ID token" });
+  }
+};
+
+exports.firebaseLogin = async (req, res) => {
+  const { idToken } = req.body;
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const {email, name, uid} = decodedToken;
+
+    let user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      user = await User.create({
+        name: name || "new user", 
+        email,
+        password: null,
+        role: "pengguna",
       });
     }
 
     const token = jwt.sign(
       { id: user.id, name: user.name, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '60m' }
+      { expiresIn: '1d' }
     );
-    const refreshToken = jwt.sign(
-      { id: user.id },
-      process.env.JWT_REFRESH_SECRET,
-      { expiresIn: '7d' }
-    );
-    
-    // Kirim cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 60 * 1000 
-    });
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 7 * 24 * 60 * 60 * 1000 
-    });
-
-    sendResponse(res, {
-      message: 'Login successful',
-      data: {
+    res.json({
+      message: 'Firebase login successful',
+      token: token,
+      user: {
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
-        token
       },
     });
-  } catch (err) {
-    console.error('[LOGIN ERROR]', err.message);
-    next(err);
+  } catch (error) {
+    res.status(401).json({ message: "Invalid Firebase ID token" });
   }
 };
 

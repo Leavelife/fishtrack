@@ -16,11 +16,13 @@ router.use(authenticateToken);
 router.post('/', 
     authorizeRoles('owner', 'karyawan'), 
     validateRequest(feedValidation),
-    feedController.createFeed);
-    router.put('/:id', 
-        authorizeRoles('owner', 'karyawan'), 
-        validateRequest(feedValidation),
-    feedController.updateFeed);
+    feedController.createFeed
+);
+router.put('/:id', 
+    authorizeRoles('owner', 'karyawan'), 
+    validateRequest(feedValidation),
+    feedController.updateFeed
+);
 router.delete('/:id', 
     authorizeRoles('owner', 'karyawan'), 
     feedController.deleteFeed);
