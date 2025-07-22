@@ -25,15 +25,15 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem("accessToken", token);
-    const decoded = jwtDecode(token);
+  const login = (role) => {
+    localStorage.setItem("role", role);
     setIsLoggedIn(true);
-    setRole(decoded.role);
+    setRole(role);
   };
 
   const logout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("role");
     setIsLoggedIn(false);
     setRole("");
   };
